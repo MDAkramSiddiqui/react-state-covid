@@ -6,7 +6,10 @@
   "author": "Mohammad Akram <mohammadakram077@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "start:dev": "webpack-dev-server --mode development --open --hot",
+    "build": "webpack --mode production",
     "lint": "eslint . -c .eslintrc.js --ext js --cache",
+
     "format": "prettier --write \"{,!(node_modules)/**/}*.js\""
   },
   "dependencies": {

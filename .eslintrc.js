@@ -17,6 +17,9 @@ module.exports = {
         },
         ecmaVersion: 2018,
         sourceType: 'module',
+        babelOptions: {
+            presets: ['@babel/preset-react'],
+        },
     },
     plugins: ['prettier', 'react', 'react-hooks', 'jsx-a11y'],
     settings: {
@@ -25,5 +28,7 @@ module.exports = {
         },
     },
     ignorePatterns: ['node_modules/'],
-    rules: {},
+    rules: {
+        'react/jsx-filename-extension': 0,
+    },
 };
