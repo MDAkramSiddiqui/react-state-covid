@@ -9,7 +9,8 @@
     "start:dev": "webpack-dev-server --mode development --open --hot",
     "build": "webpack --mode production",
     "lint": "eslint . -c .eslintrc.js --ext js --cache",
-    "format": "prettier --write \"{,!(node_modules)/**/}*.(js|css)\""
+    "lint:fix": "yarn lint --fix",
+    "format": "prettier --write \"{,!(node_modules|dist)/**/}*.(js|css)\""
   },
   "dependencies": {
     "add": "^2.0.6",
