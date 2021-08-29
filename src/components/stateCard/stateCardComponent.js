@@ -18,11 +18,7 @@ StateCard.propTypes = {
         active: PropTypes.string.isRequired,
         cured: PropTypes.string.isRequired,
         deaths: PropTypes.string.isRequired,
-    }),
-};
-
-StateCard.defaultProps = {
-    stateData: {},
+    }).isRequired,
 };
 
 export default StateCard;
