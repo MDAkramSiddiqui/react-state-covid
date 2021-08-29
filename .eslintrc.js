@@ -30,5 +30,6 @@ module.exports = {
     ignorePatterns: ['node_modules/'],
     rules: {
         'react/jsx-filename-extension': 0,
+        'react/no-array-index-key': 0,
     },
 };
