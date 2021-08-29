@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Renew32 } from '@carbon/icons-react';
-import { Button } from 'carbon-components-react';
+import { Button, Tile } from 'carbon-components-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { debounce } from 'lodash';
 
@@ -17,7 +17,8 @@ function App() {
     const [statesData, setStatesData] = useState(covidStatesData);
 
     const fetchCovidData = () => {
-        fetch(
+        setIsDataLoading(true);
+        return fetch(
             `${constants.global.BASE_API_URI}${constants.global.COVID_STATES_DATA_API}`,
         )
             .then((response) => response.json())
@@ -27,8 +28,8 @@ function App() {
                     setStatesData(response.data);
                 }
                 setIsDataLoading(false);
-            });
-    };
+            })
+        };
 
     const filterList = (stateQuery) => {
         if (!stateQuery) {
@@ -45,7 +46,7 @@ function App() {
             if (queries.some((q) => stateName.includes(q))) {
                 filteredStatesData.push(state);
             }
-        }, []);
+        });
 
         setStatesData(filteredStatesData);
     };
@@ -57,15 +58,21 @@ function App() {
     return (
         <div className="bx--grid bx--grid--full-width">
             <div className="bx--row wrapper">
-                <SearchBar onChange={debounce(filterList, 500)} />
-                <Button hasIconOnly iconDescription="Refresh" size="md">
+                <SearchBar disabled={isDataLoading} onChange={debounce(filterList, 500)} />
+                <Button disabled={isDataLoading} onClick={() => fetchCovidData()} hasIconOnly iconDescription="Refresh" size="md">
                     <Renew32 />
                 </Button>
             </div>
             {isDataLoading && <Loader />}
             {!isDataLoading &&
-                statesData.map((data, index) => (
-                    <StateCard stateData={data} key={index} />
+                (statesData.length ? (
+                    statesData.map((data, index) => (
+                        <StateCard stateData={data} key={index} />
+                    ))
+                ) : (
+                    <Tile>
+                        <h4>No results found</h4>
+                    </Tile>
                 ))}
         </div>
     );

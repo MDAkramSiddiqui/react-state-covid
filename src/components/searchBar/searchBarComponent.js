@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './searchBar.css';
 import { Search } from 'carbon-components-react';
 
-function SearchBar({ onChange }) {
+function SearchBar({ onChange, disabled }) {
     const [statesQuery, setStatesQuery] = useState('');
 
     const handleStateQueryChange = (e) => {
@@ -14,6 +14,7 @@ function SearchBar({ onChange }) {
     return (
         <Search
             value={statesQuery}
+            disabled={disabled}
             onChange={(e) => handleStateQueryChange(e)}
             className="inline"
             placeholder="Search, ex. Delhi, Kerala, All etc."
@@ -24,6 +25,7 @@ function SearchBar({ onChange }) {
 
 SearchBar.propTypes = {
     onChange: PropTypes.func.isRequired,
+    disabled: PropTypes.bool.isRequired
 };
 
 export default SearchBar;
