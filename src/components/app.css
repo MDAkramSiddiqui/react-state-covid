@@ -1,0 +1,13 @@
+.flex {
+    display: flex;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper > * {
+    padding: 10px;
+    flex: 1 100%;
+}

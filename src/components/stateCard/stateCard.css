@@ -1,0 +1,8 @@
+.tile {
+    margin: 20px 0px;
+    transition: all 0.2s;
+}
+
+.tile:hover {
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
