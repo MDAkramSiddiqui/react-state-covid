@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Renew32 } from '@carbon/icons-react';
-import { Button, Tile } from 'carbon-components-react';
+import {
+    Renew32,
+    SortAscending32,
+    SortDescending32,
+} from '@carbon/icons-react';
+import { Button, Tile, Dropdown } from 'carbon-components-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { debounce } from 'lodash';
+import { debounce, orderBy } from 'lodash';
 
 import constants from '../constants';
 import Loader from './loader';
@@ -10,11 +14,20 @@ import SearchBar from './searchBar';
 import StateCard from './stateCard';
 import updateStatesData from '../actions/states';
 
+const SortEnum = {
+    NONE: 'None sorted',
+    ACTIVE_CASES: 'Active Cases',
+    TOTAL_CASES: 'Total Cases',
+    TOTAL_DEATHS: 'Total Deaths',
+};
+
 function App() {
     const dispatch = useDispatch();
-    const covidStatesData = useSelector((store) => store.states);
+    const storedStatesData = useSelector((store) => store.states);
     const [isDataLoading, setIsDataLoading] = useState(true);
-    const [statesData, setStatesData] = useState(covidStatesData);
+    const [isSortAsc, setIsSortAsc] = useState(true);
+    const [statesData, setStatesData] = useState(storedStatesData);
+    const [currentSortBy, setCurrentSortBy] = useState(SortEnum.NONE);
 
     const fetchCovidData = () => {
         setIsDataLoading(true);
@@ -28,41 +41,115 @@ function App() {
                     setStatesData(response.data);
                 }
                 setIsDataLoading(false);
-            })
-        };
+                setIsSortAsc(true);
+                setCurrentSortBy(SortEnum.NONE);
+            });
+    };
 
     const filterList = (stateQuery) => {
-        if (!stateQuery) {
-            setStatesData(covidStatesData);
-            return;
+        const filteredStatesData = [];
+        if (stateQuery) {
+            const queries = stateQuery
+                .split(',')
+                .map((q) => q.trim().toLowerCase());
+            storedStatesData.forEach((state) => {
+                const stateName = state.name.toLowerCase();
+                if (queries.some((q) => stateName.includes(q))) {
+                    filteredStatesData.push(state);
+                }
+            });
+        } else {
+            filteredStatesData.push(...storedStatesData);
         }
 
-        const queries = stateQuery
-            .split(',')
-            .map((q) => q.trim().toLowerCase());
-        const filteredStatesData = [];
-        covidStatesData.forEach((state) => {
-            const stateName = state.name.toLowerCase();
-            if (queries.some((q) => stateName.includes(q))) {
-                filteredStatesData.push(state);
-            }
-        });
+        sortData(filteredStatesData);
+    };
 
-        setStatesData(filteredStatesData);
+    const handleSortByChange = (selectedSortBy) => {
+        setCurrentSortBy(selectedSortBy);
+    };
+
+    const handleSortOrderChange = () => {
+        setIsSortAsc(!isSortAsc);
+    };
+
+    const sortData = (data) => {
+        let sortedData = [];
+        switch (currentSortBy) {
+            case SortEnum.ACTIVE_CASES:
+                sortedData = orderBy(
+                    data,
+                    'active',
+                    isSortAsc ? 'asc' : 'desc',
+                );
+                setStatesData(sortedData);
+                break;
+            case SortEnum.TOTAL_DEATHS:
+                sortedData = orderBy(
+                    data,
+                    'deaths',
+                    isSortAsc ? 'asc' : 'desc',
+                );
+                setStatesData(sortedData);
+                break;
+            case SortEnum.TOTAL_CASES:
+                sortedData = orderBy(data, 'cured', isSortAsc ? 'asc' : 'desc');
+                setStatesData(sortedData);
+                break;
+            case SortEnum.NONE:
+            default:
+                sortedData = orderBy(data, 'name', isSortAsc ? 'asc' : 'desc');
+                setStatesData(sortedData);
+        }
     };
 
     useEffect(() => {
         fetchCovidData();
     }, []);
 
+    useEffect(() => {
+        sortData(statesData);
+    }, [currentSortBy, isSortAsc]);
+
     return (
         <div className="bx--grid bx--grid--full-width">
+            <div className="bx--row">
+                <SearchBar
+                    disabled={isDataLoading}
+                    onChange={debounce(filterList, 500)}
+                />
+            </div>
             <div className="bx--row wrapper">
-                <SearchBar disabled={isDataLoading} onChange={debounce(filterList, 500)} />
-                <Button disabled={isDataLoading} onClick={() => fetchCovidData()} hasIconOnly iconDescription="Refresh" size="md">
+                <Dropdown
+                    disabled={isDataLoading}
+                    ariaLabel="Dropdown"
+                    id="carbon-dropdown-example"
+                    items={Object.values(SortEnum)}
+                    size="xl"
+                    label="Sort By"
+                    selectedItem={currentSortBy}
+                    onChange={(value) => handleSortByChange(value.selectedItem)}
+                />
+                <Button
+                    disabled={isDataLoading}
+                    onClick={() => handleSortOrderChange()}
+                    hasIconOnly
+                    iconDescription="Sort order"
+                    size="sm"
+                >
+                    {isSortAsc ? <SortAscending32 /> : <SortDescending32 />}
+                </Button>
+                <Button
+                    disabled={isDataLoading}
+                    onClick={() => fetchCovidData()}
+                    hasIconOnly
+                    iconDescription="Refresh"
+                    size="md"
+                >
                     <Renew32 />
                 </Button>
             </div>
+
             {isDataLoading && <Loader />}
             {!isDataLoading &&
                 (statesData.length ? (
@@ -70,7 +157,7 @@ function App() {
                         <StateCard stateData={data} key={index} />
                     ))
                 ) : (
-                    <Tile>
+                    <Tile className="tile">
                         <h4>No results found</h4>
                     </Tile>
                 ))}

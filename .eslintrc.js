@@ -31,5 +31,6 @@ module.exports = {
     rules: {
         'react/jsx-filename-extension': 0,
         'react/no-array-index-key': 0,
+        'no-use-before-define': 0,
     },
 };

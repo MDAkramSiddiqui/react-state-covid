@@ -25,7 +25,7 @@ function SearchBar({ onChange, disabled }) {
 
 SearchBar.propTypes = {
     onChange: PropTypes.func.isRequired,
-    disabled: PropTypes.bool.isRequired
+    disabled: PropTypes.bool.isRequired,
 };
 
 export default SearchBar;

@@ -19,9 +19,9 @@ function StateCard({ stateData }) {
 StateCard.propTypes = {
     stateData: PropTypes.shape({
         name: PropTypes.string.isRequired,
-        active: PropTypes.string.isRequired,
-        cured: PropTypes.string.isRequired,
-        deaths: PropTypes.string.isRequired,
+        active: PropTypes.number.isRequired,
+        cured: PropTypes.number.isRequired,
+        deaths: PropTypes.number.isRequired,
     }).isRequired,
 };
 
