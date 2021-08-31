@@ -1,9 +1,11 @@
 .tile {
     margin: 20px 0px;
     padding: 20px;
+    border: 5px dashed #fff;
     transition: all 0.2s;
 }
 
 .tile:hover {
+    border-color: #000;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
 }

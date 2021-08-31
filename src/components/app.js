@@ -157,9 +157,11 @@ function App() {
                         <StateCard stateData={data} key={index} />
                     ))
                 ) : (
-                    <Tile className="tile">
-                        <h4>No results found</h4>
-                    </Tile>
+                    <div className="tile">
+                        <Tile>
+                            <h4>No results found</h4>
+                        </Tile>
+                    </div>
                 ))}
         </div>
     );
