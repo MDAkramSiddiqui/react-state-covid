@@ -13,11 +13,14 @@
     "format": "prettier --write \"{,!(node_modules|dist)/**/}*.(js|css)\""
   },
   "dependencies": {
+    "@carbon/charts": "^0.45.1",
+    "@carbon/charts-react": "^0.45.1",
     "@carbon/icons-react": "^10.37.0",
     "add": "^2.0.6",
     "carbon-components": "^10.41.0",
     "carbon-components-react": "^7.41.0",
     "carbon-icons": "^7.0.7",
+    "d3": "^7.0.1",
     "lodash": "^4.17.21",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
