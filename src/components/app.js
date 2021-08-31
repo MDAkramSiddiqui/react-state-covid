@@ -15,7 +15,7 @@ import StateCard from './stateCard';
 import updateStatesData from '../actions/states';
 
 const SortEnum = {
-    NONE: 'None sorted',
+    STATE_NAME: 'State Name',
     ACTIVE_CASES: 'Active Cases',
     TOTAL_CASES: 'Total Cases',
     TOTAL_DEATHS: 'Total Deaths',
@@ -27,7 +27,7 @@ function App() {
     const [isDataLoading, setIsDataLoading] = useState(true);
     const [isSortAsc, setIsSortAsc] = useState(true);
     const [statesData, setStatesData] = useState(storedStatesData);
-    const [currentSortBy, setCurrentSortBy] = useState(SortEnum.NONE);
+    const [currentSortBy, setCurrentSortBy] = useState(SortEnum.STATE_NAME);
 
     const fetchCovidData = () => {
         setIsDataLoading(true);
@@ -42,7 +42,7 @@ function App() {
                 }
                 setIsDataLoading(false);
                 setIsSortAsc(true);
-                setCurrentSortBy(SortEnum.NONE);
+                setCurrentSortBy(SortEnum.STATE_NAME);
             });
     };
 
@@ -96,7 +96,7 @@ function App() {
                 sortedData = orderBy(data, 'cured', isSortAsc ? 'asc' : 'desc');
                 setStatesData(sortedData);
                 break;
-            case SortEnum.NONE:
+            case SortEnum.STATE_NAME:
             default:
                 sortedData = orderBy(data, 'name', isSortAsc ? 'asc' : 'desc');
                 setStatesData(sortedData);
