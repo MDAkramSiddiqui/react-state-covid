@@ -12,8 +12,8 @@ function SearchBar({ onChange, disabled }) {
     };
 
     useEffect(() => {
-        setStatesQuery("")
-    }, [disabled])
+        setStatesQuery('');
+    }, [disabled]);
 
     return (
         <Search

@@ -1,10 +1,16 @@
 import React from 'react';
-import './loader.css';
 import { Loading } from 'carbon-components-react';
 
 function Loader() {
     return (
-        <div className="loader">
+        <div
+            style={{
+                position: 'absolute',
+                left: '50%',
+                top: '50%',
+                transform: "translate('-50%', '-50%')",
+            }}
+        >
             <Loading description="Loading data..." withOverlay={false} />
         </div>
     );
