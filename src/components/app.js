@@ -44,8 +44,14 @@ function App() {
         )
             .then((response) => response.json())
             .then((response) => {
-                dispatch(updateStatesData(response.status === 'success' ? response.data : []));
-                setStatesData(statesData => response.status === 'success' ? response.data : statesData);
+                dispatch(
+                    updateStatesData(
+                        response.status === 'success' ? response.data : [],
+                    ),
+                );
+                setStatesData((statesData) =>
+                    response.status === 'success' ? response.data : statesData,
+                );
                 setIsDataLoading(() => false);
                 setIsSortAsc(() => true);
                 setCurrentSortBy(() => SortEnum.STATE_NAME);
@@ -76,7 +82,7 @@ function App() {
     };
 
     const handleSortOrderChange = () => {
-        setIsSortAsc(isSortAsc => !isSortAsc);
+        setIsSortAsc((isSortAsc) => !isSortAsc);
     };
 
     const sortData = (data) => {
@@ -85,27 +91,34 @@ function App() {
             case SortEnum.ACTIVE_CASES:
                 sortedData = orderBy(
                     data,
-                    o => o.active.total,
+                    (o) => o.active.total,
                     isSortAsc ? 'asc' : 'desc',
                 );
                 break;
             case SortEnum.DEATH_CASES:
                 sortedData = orderBy(
                     data,
-                    o => o.death.total,
+                    (o) => o.death.total,
                     isSortAsc ? 'asc' : 'desc',
                 );
                 break;
             case SortEnum.CURED_CASES:
-                sortedData = orderBy(data, o => o.cured.total, isSortAsc ? 'asc' : 'desc');
+                sortedData = orderBy(
+                    data,
+                    (o) => o.cured.total,
+                    isSortAsc ? 'asc' : 'desc',
+                );
                 break;
             case SortEnum.STATE_NAME:
             default:
-                sortedData = orderBy(data, o => o.name, isSortAsc ? 'asc' : 'desc');
+                sortedData = orderBy(
+                    data,
+                    (o) => o.name,
+                    isSortAsc ? 'asc' : 'desc',
+                );
         }
         setStatesData(() => sortedData);
     };
-
 
     return (
         <div className="bx--grid bx--grid--full-width">
