@@ -29,6 +29,14 @@ function App() {
     const [statesData, setStatesData] = useState(storedStatesData);
     const [currentSortBy, setCurrentSortBy] = useState(SortEnum.STATE_NAME);
 
+    useEffect(() => {
+        fetchCovidData();
+    }, []);
+
+    useEffect(() => {
+        sortData(statesData);
+    }, [isSortAsc, currentSortBy]);
+
     const fetchCovidData = () => {
         setIsDataLoading(true);
         return fetch(
@@ -36,13 +44,11 @@ function App() {
         )
             .then((response) => response.json())
             .then((response) => {
-                if (response.status === 'success') {
-                    dispatch(updateStatesData(response.data));
-                    setStatesData(response.data);
-                }
-                setIsDataLoading(false);
-                setIsSortAsc(true);
-                setCurrentSortBy(SortEnum.STATE_NAME);
+                dispatch(updateStatesData(response.status === 'success' ? response.data : []));
+                setStatesData(statesData => response.status === 'success' ? response.data : statesData);
+                setIsDataLoading(() => false);
+                setIsSortAsc(() => true);
+                setCurrentSortBy(() => SortEnum.STATE_NAME);
             });
     };
 
@@ -65,12 +71,12 @@ function App() {
         sortData(filteredStatesData);
     };
 
-    const handleSortByChange = ({ selectedSortBy }) => {
-        setCurrentSortBy(selectedSortBy);
+    const handleSortByChange = ({ selectedItem }) => {
+        setCurrentSortBy(() => selectedItem);
     };
 
     const handleSortOrderChange = () => {
-        setIsSortAsc(!isSortAsc);
+        setIsSortAsc(isSortAsc => !isSortAsc);
     };
 
     const sortData = (data) => {
@@ -79,37 +85,27 @@ function App() {
             case SortEnum.ACTIVE_CASES:
                 sortedData = orderBy(
                     data,
-                    'active',
+                    o => o.active.total,
                     isSortAsc ? 'asc' : 'desc',
                 );
-                setStatesData(sortedData);
                 break;
             case SortEnum.DEATH_CASES:
                 sortedData = orderBy(
                     data,
-                    'deaths',
+                    o => o.death.total,
                     isSortAsc ? 'asc' : 'desc',
                 );
-                setStatesData(sortedData);
                 break;
             case SortEnum.CURED_CASES:
-                sortedData = orderBy(data, 'cured', isSortAsc ? 'asc' : 'desc');
-                setStatesData(sortedData);
+                sortedData = orderBy(data, o => o.cured.total, isSortAsc ? 'asc' : 'desc');
                 break;
             case SortEnum.STATE_NAME:
             default:
-                sortedData = orderBy(data, 'name', isSortAsc ? 'asc' : 'desc');
-                setStatesData(sortedData);
+                sortedData = orderBy(data, o => o.name, isSortAsc ? 'asc' : 'desc');
         }
+        setStatesData(() => sortedData);
     };
 
-    useEffect(() => {
-        fetchCovidData();
-    }, []);
-
-    useEffect(() => {
-        sortData(statesData);
-    }, [currentSortBy, isSortAsc]);
 
     return (
         <div className="bx--grid bx--grid--full-width">
@@ -130,6 +126,7 @@ function App() {
                     }}
                 >
                     <Dropdown
+                        id="sort-by-dropdown"
                         style={{ marginInlineEnd: '10px' }}
                         disabled={isDataLoading}
                         ariaLabel="Dropdown"
@@ -142,7 +139,7 @@ function App() {
                     <Button
                         style={{ marginInlineEnd: '10px' }}
                         disabled={isDataLoading}
-                        onClick={() => handleSortOrderChange()}
+                        onClick={handleSortOrderChange}
                         hasIconOnly
                         iconDescription="Sort order"
                         size="sm"
