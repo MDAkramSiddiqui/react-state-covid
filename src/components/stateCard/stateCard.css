@@ -1,6 +1,6 @@
 .tile {
-    margin: 20px 0px;
-    padding: 20px;
+    margin: 10px 0px;
+    padding: 10px;
     border: 5px dashed #fff;
     transition: all 0.2s;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './stateCard.css';
-import { Tile } from 'carbon-components-react';
+import { Accordion, AccordionItem, Tile } from 'carbon-components-react';
 import { StackedBarChart } from '@carbon/charts-react';
 import '@carbon/charts/styles.css';
 import { ArrowDown16, ArrowUp16 } from '@carbon/icons-react';
@@ -125,7 +125,11 @@ function StateCard({ stateData }) {
                     </p>
                 </div>
             </Tile>
-            <StackedBarChart data={statesBarData} options={options} />
+            <Accordion>
+                <AccordionItem title="Graph">
+                    <StackedBarChart data={statesBarData} options={options} />
+                </AccordionItem>
+            </Accordion>
         </div>
     );
 }
