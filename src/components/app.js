@@ -119,35 +119,50 @@ function App() {
                     onChange={debounce(filterList, 500)}
                 />
             </div>
-            <div className="bx--row wrapper">
-                <Dropdown
-                    disabled={isDataLoading}
-                    ariaLabel="Dropdown"
-                    id="carbon-dropdown-example"
-                    items={Object.values(SortEnum)}
-                    size="xl"
-                    label="Sort By"
-                    selectedItem={currentSortBy}
-                    onChange={(value) => handleSortByChange(value.selectedItem)}
-                />
-                <Button
-                    disabled={isDataLoading}
-                    onClick={() => handleSortOrderChange()}
-                    hasIconOnly
-                    iconDescription="Sort order"
-                    size="sm"
+            <div className="bx--row">
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignContent: 'center',
+                        flexGrow: '1',
+                        margin: '20px 0',
+                    }}
                 >
-                    {isSortAsc ? <SortAscending32 /> : <SortDescending32 />}
-                </Button>
-                <Button
-                    disabled={isDataLoading}
-                    onClick={() => fetchCovidData()}
-                    hasIconOnly
-                    iconDescription="Refresh"
-                    size="md"
-                >
-                    <Renew32 />
-                </Button>
+                    <Dropdown
+                        style={{ marginInlineEnd: '10px', width: '150px' }}
+                        disabled={isDataLoading}
+                        ariaLabel="Dropdown"
+                        id="carbon-dropdown-example"
+                        items={Object.values(SortEnum)}
+                        size="xl"
+                        label="Sort By"
+                        selectedItem={currentSortBy}
+                        onChange={(value) =>
+                            handleSortByChange(value.selectedItem)
+                        }
+                    />
+                    <Button
+                        style={{ marginInlineEnd: '10px' }}
+                        disabled={isDataLoading}
+                        onClick={() => handleSortOrderChange()}
+                        hasIconOnly
+                        iconDescription="Sort order"
+                        size="sm"
+                    >
+                        {isSortAsc ? <SortAscending32 /> : <SortDescending32 />}
+                    </Button>
+                    <Button
+                        style={{ marginInlineEnd: '10px' }}
+                        disabled={isDataLoading}
+                        onClick={() => fetchCovidData()}
+                        hasIconOnly
+                        iconDescription="Refresh"
+                        size="md"
+                    >
+                        <Renew32 />
+                    </Button>
+                </div>
             </div>
 
             {isDataLoading && <Loader />}
