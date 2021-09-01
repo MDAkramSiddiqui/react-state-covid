@@ -130,7 +130,7 @@ function App() {
                     }}
                 >
                     <Dropdown
-                        style={{ marginInlineEnd: '10px'}}
+                        style={{ marginInlineEnd: '10px' }}
                         disabled={isDataLoading}
                         ariaLabel="Dropdown"
                         items={Object.values(SortEnum)}
