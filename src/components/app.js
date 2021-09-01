@@ -17,8 +17,8 @@ import updateStatesData from '../actions/states';
 const SortEnum = {
     STATE_NAME: 'State Name',
     ACTIVE_CASES: 'Active Cases',
-    TOTAL_CASES: 'Total Cases',
-    TOTAL_DEATHS: 'Total Deaths',
+    CURED_CASES: 'Cured Cases',
+    DEATH_CASES: 'Death Cases',
 };
 
 function App() {
@@ -65,7 +65,7 @@ function App() {
         sortData(filteredStatesData);
     };
 
-    const handleSortByChange = (selectedSortBy) => {
+    const handleSortByChange = ({ selectedSortBy }) => {
         setCurrentSortBy(selectedSortBy);
     };
 
@@ -84,7 +84,7 @@ function App() {
                 );
                 setStatesData(sortedData);
                 break;
-            case SortEnum.TOTAL_DEATHS:
+            case SortEnum.DEATH_CASES:
                 sortedData = orderBy(
                     data,
                     'deaths',
@@ -92,7 +92,7 @@ function App() {
                 );
                 setStatesData(sortedData);
                 break;
-            case SortEnum.TOTAL_CASES:
+            case SortEnum.CURED_CASES:
                 sortedData = orderBy(data, 'cured', isSortAsc ? 'asc' : 'desc');
                 setStatesData(sortedData);
                 break;
@@ -133,14 +133,11 @@ function App() {
                         style={{ marginInlineEnd: '10px', width: '150px' }}
                         disabled={isDataLoading}
                         ariaLabel="Dropdown"
-                        id="carbon-dropdown-example"
                         items={Object.values(SortEnum)}
                         size="xl"
                         label="Sort By"
                         selectedItem={currentSortBy}
-                        onChange={(value) =>
-                            handleSortByChange(value.selectedItem)
-                        }
+                        onChange={handleSortByChange}
                     />
                     <Button
                         style={{ marginInlineEnd: '10px' }}
