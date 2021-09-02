@@ -13,6 +13,7 @@ import Loader from './loader';
 import SearchBar from './searchBar';
 import StateCard from './stateCard';
 import updateStatesData from '../actions/states';
+import updateLastRefresh from '../actions/lastRefresh';
 
 const SortEnum = {
     STATE_NAME: 'State Name',
@@ -24,13 +25,18 @@ const SortEnum = {
 function App() {
     const dispatch = useDispatch();
     const storedStatesData = useSelector((store) => store.states);
-    const [isDataLoading, setIsDataLoading] = useState(true);
+    const lastRefresh = useSelector((store) => store.lastRefresh);
+    const [isDataLoading, setIsDataLoading] = useState(false);
     const [isSortAsc, setIsSortAsc] = useState(true);
     const [statesData, setStatesData] = useState(storedStatesData);
+    const [refreshTimeStamp, setRefreshTimeStamp] = useState(lastRefresh);
     const [currentSortBy, setCurrentSortBy] = useState(SortEnum.STATE_NAME);
 
     useEffect(() => {
-        fetchCovidData();
+        setIsDataLoading(() => !storedStatesData?.length);
+        if (!storedStatesData?.length) {
+            fetchCovidData();
+        }
     }, []);
 
     useEffect(() => {
@@ -52,6 +58,22 @@ function App() {
                 setStatesData((statesData) =>
                     response.status === 'success' ? response.data : statesData,
                 );
+
+                const currentTime = Date.now();
+
+                dispatch(
+                    updateLastRefresh(
+                        response.status === 'success'
+                            ? currentTime
+                            : refreshTimeStamp,
+                    ),
+                );
+                setRefreshTimeStamp((refreshTimeStamp) =>
+                    response.status === 'success'
+                        ? currentTime
+                        : refreshTimeStamp,
+                );
+
                 setIsDataLoading(() => false);
                 setIsSortAsc(() => true);
                 setCurrentSortBy(() => SortEnum.STATE_NAME);
@@ -128,50 +150,91 @@ function App() {
                     onChange={debounce(filterList, 500)}
                 />
             </div>
-            <div className="bx--row">
+            <div className="bx--row" style={{ marginTop: '10px' }}>
                 <div
                     style={{
                         display: 'flex',
+                        flexWrap: 'wrap',
                         justifyContent: 'center',
-                        alignContent: 'center',
                         flexGrow: '1',
-                        margin: '20px 0',
+                        alignItems: 'flex-end',
+                        margin: '10px 0',
                     }}
                 >
-                    <Dropdown
-                        id="sort-by-dropdown"
-                        style={{ marginInlineEnd: '10px' }}
-                        disabled={isDataLoading}
-                        ariaLabel="Dropdown"
-                        items={Object.values(SortEnum)}
-                        size="xl"
-                        label="Sort By"
-                        selectedItem={currentSortBy}
-                        onChange={handleSortByChange}
-                    />
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginInlineEnd: '10px',
+                            marginBottom: '10px',
+                        }}
+                    >
+                        <span style={{ marginBottom: '5px', fontSize: '12px' }}>
+                            Sort By:
+                        </span>
+                        <Dropdown
+                            id="sort-by-dropdown"
+                            disabled={isDataLoading}
+                            ariaLabel="Dropdown"
+                            items={Object.values(SortEnum)}
+                            size="xl"
+                            label="Sort By"
+                            selectedItem={currentSortBy}
+                            onChange={handleSortByChange}
+                        />
+                    </div>
                     <Button
-                        style={{ marginInlineEnd: '10px' }}
+                        style={{
+                            marginInlineEnd: '10px',
+                            marginBottom: '10px',
+                        }}
                         disabled={isDataLoading}
                         onClick={handleSortOrderChange}
                         hasIconOnly
                         iconDescription="Sort order"
-                        size="sm"
                     >
-                        {isSortAsc ? <SortAscending32 /> : <SortDescending32 />}
+                        {isSortAsc ? (
+                            <SortAscending32 size="sm" />
+                        ) : (
+                            <SortDescending32 size="sm" />
+                        )}
                     </Button>
                     <Button
-                        style={{ marginInlineEnd: '10px' }}
+                        style={{
+                            marginInlineEnd: '10px',
+                            marginBottom: '10px',
+                        }}
                         disabled={isDataLoading}
                         onClick={() => fetchCovidData()}
                         hasIconOnly
                         iconDescription="Refresh"
-                        size="md"
                     >
-                        <Renew32 />
+                        <Renew32 size="sm" />
                     </Button>
                 </div>
             </div>
-
+            <div
+                className="bx--row"
+                style={{
+                    marginBottom: '10px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                }}
+            >
+                <span
+                    style={{
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        marginInlineEnd: '10px',
+                        marginBottom: '10px',
+                        color: isDataLoading ? '#ddd' : '#333',
+                    }}
+                >
+                    {new Date(lastRefresh).toTimeString()}
+                </span>
+            </div>
             {isDataLoading && <Loader />}
             {!isDataLoading &&
                 (statesData.length ? (

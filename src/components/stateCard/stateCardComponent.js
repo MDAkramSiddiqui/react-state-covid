@@ -127,7 +127,7 @@ function StateCard({ stateData }) {
             </Tile>
             <Accordion>
                 <AccordionItem title="Graph">
-                    <StackedBarChart data={statesBarData} options={options} />
+                    {/* <StackedBarChart data={statesBarData} options={options} /> */}
                 </AccordionItem>
             </Accordion>
         </div>
