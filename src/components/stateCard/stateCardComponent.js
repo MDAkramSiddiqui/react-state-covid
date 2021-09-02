@@ -55,6 +55,9 @@ function StateCard({ stateData }) {
         height: '400px',
     };
 
+    const numberWithCommas = (num) =>
+        num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
     return (
         <div className="tile">
             <Tile>
@@ -70,7 +73,7 @@ function StateCard({ stateData }) {
                         <span style={{ fontWeight: '500' }}>
                             Active cases:&nbsp;
                         </span>
-                        {stateData.active.total}&nbsp;
+                        {numberWithCommas(stateData.active.total)}&nbsp;
                         <span
                             style={{
                                 display: 'inline-block',
@@ -89,12 +92,12 @@ function StateCard({ stateData }) {
                                 ) : (
                                     <ArrowDown16 />
                                 ))}
-                            {stateData.active.changes})
+                            {numberWithCommas(stateData.active.changes)})
                         </span>
                     </p>
                     <p style={{ marginInlineEnd: '10px' }}>
                         <span style={{ fontWeight: '500' }}>Cured cases: </span>
-                        {stateData.cured.total}&nbsp;
+                        {numberWithCommas(stateData.cured.total)}&nbsp;
                         <span
                             style={{
                                 display: 'inline-block',
@@ -103,12 +106,12 @@ function StateCard({ stateData }) {
                             }}
                         >
                             ({stateData.cured.changes !== 0 && <ArrowUp16 />}
-                            {stateData.cured.changes})
+                            {numberWithCommas(stateData.cured.changes)})
                         </span>
                     </p>
                     <p style={{ marginInlineEnd: '10px' }}>
                         <span style={{ fontWeight: '500' }}>Death cases: </span>
-                        {stateData.death.total}&nbsp;
+                        {numberWithCommas(stateData.death.total)}&nbsp;
                         <span
                             style={{
                                 display: 'inline-block',
@@ -120,7 +123,7 @@ function StateCard({ stateData }) {
                             }}
                         >
                             ({stateData.death.changes !== 0 && <ArrowUp16 />}
-                            {stateData.death.changes})
+                            {numberWithCommas(stateData.death.changes)})
                         </span>
                     </p>
                 </div>
