@@ -7,7 +7,23 @@ import './index.css';
 import App from './components/app';
 import allReducers from './reducers';
 
-const store = createStore(allReducers);
+const reduxStore = () => {
+    const data = localStorage.getItem("APP_STATE");
+    if (data) {
+        return JSON.parse(data);
+    }
+    return {
+        statesData: [],
+        lastRefresh: Date.now()
+    };
+};
+
+
+const store = createStore(allReducers, reduxStore());
+
+store.subscribe(()=>{
+    localStorage.setItem('APP_STATE', JSON.stringify(store.getState()))
+})
 
 ReactDOM.render(
     <Provider store={store}>
