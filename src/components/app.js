@@ -3,8 +3,9 @@ import {
     Renew32,
     SortAscending32,
     SortDescending32,
+    Warning16,
 } from '@carbon/icons-react';
-import { Button, Tile, Dropdown } from 'carbon-components-react';
+import { Button, Tile, Dropdown, Tooltip } from 'carbon-components-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { debounce, orderBy } from 'lodash';
 
@@ -31,12 +32,18 @@ function App() {
     const [statesData, setStatesData] = useState(storedStatesData);
     const [refreshTimeStamp, setRefreshTimeStamp] = useState(lastRefresh);
     const [currentSortBy, setCurrentSortBy] = useState(SortEnum.STATE_NAME);
+    const [isStaleData, setIsStaleData] = useState(false);
 
     useEffect(() => {
         setIsDataLoading(() => !storedStatesData?.length);
         if (!storedStatesData?.length) {
             fetchCovidData();
         }
+
+        setIsStaleData(() => {
+            const oneDay = 24 * 60 * 60 * 1000;
+            return Date.now() - oneDay > lastRefresh;
+        });
     }, []);
 
     useEffect(() => {
@@ -218,22 +225,34 @@ function App() {
             <div
                 className="bx--row"
                 style={{
-                    marginBottom: '10px',
                     display: 'flex',
                     justifyContent: 'center',
+                    alignItems: 'center',
+                    marginBottom: '20px',
                 }}
             >
                 <span
                     style={{
                         fontSize: '14px',
                         fontWeight: '600',
-                        marginInlineEnd: '10px',
-                        marginBottom: '10px',
                         color: isDataLoading ? '#ddd' : '#333',
                     }}
                 >
                     Last updated: {new Date(lastRefresh).toTimeString()}
                 </span>
+                {isStaleData && (
+                    <Tooltip direction="top" tabIndex={0}>
+                        <span
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <Warning16 style={{ color: '#FFE194' }} />
+                            &nbsp; Data might be stale
+                        </span>
+                    </Tooltip>
+                )}
             </div>
             {isDataLoading && <Loader />}
             {!isDataLoading &&

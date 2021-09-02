@@ -34,6 +34,6 @@ module.exports = {
         'no-use-before-define': 0,
         'no-shadow': 0,
         'no-unused-vars': 1,
-        'quotes': [2, 'single', { 'avoidEscape': true }]
+        quotes: [2, 'single', { avoidEscape: true }],
     },
 };

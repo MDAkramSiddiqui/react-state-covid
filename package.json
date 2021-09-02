@@ -9,7 +9,7 @@
     "start:dev": "webpack-dev-server --mode development --open --hot --host 0.0.0.0 --port 8080",
     "build": "webpack --mode production",
     "lint": "eslint . -c .eslintrc.js --ext js --cache",
-    "lint:fix": "yarn lint --fix",
+    "lint-fix": "yarn lint --fix",
     "format": "prettier --write \"{,!(node_modules|dist)/**/}*.(js|css)\""
   },
   "dependencies": {

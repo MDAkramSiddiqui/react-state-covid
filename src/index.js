@@ -15,16 +15,18 @@ const reduxStore = () => {
     }
     return {
         statesData: [],
-        lastRefresh: Date.now()
+        lastRefresh: Date.now(),
     };
 };
 
-
 const store = createStore(allReducers, reduxStore());
 
-store.subscribe(()=>{
-    localStorage.setItem(constants.global.APP_NAME, JSON.stringify(store.getState()))
-})
+store.subscribe(() => {
+    localStorage.setItem(
+        constants.global.APP_NAME,
+        JSON.stringify(store.getState()),
+    );
+});
 
 ReactDOM.render(
     <Provider store={store}>
