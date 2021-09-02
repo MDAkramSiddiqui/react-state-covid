@@ -232,7 +232,7 @@ function App() {
                         color: isDataLoading ? '#ddd' : '#333',
                     }}
                 >
-                    {new Date(lastRefresh).toTimeString()}
+                    Last updated: {new Date(lastRefresh).toTimeString()}
                 </span>
             </div>
             {isDataLoading && <Loader />}
