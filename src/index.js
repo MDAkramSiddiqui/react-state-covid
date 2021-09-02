@@ -6,9 +6,10 @@ import { Provider } from 'react-redux';
 import './index.css';
 import App from './components/app';
 import allReducers from './reducers';
+import constants from './constants';
 
 const reduxStore = () => {
-    const data = localStorage.getItem("APP_STATE");
+    const data = localStorage.getItem(constants.global.APP_NAME);
     if (data) {
         return JSON.parse(data);
     }
@@ -22,7 +23,7 @@ const reduxStore = () => {
 const store = createStore(allReducers, reduxStore());
 
 store.subscribe(()=>{
-    localStorage.setItem('APP_STATE', JSON.stringify(store.getState()))
+    localStorage.setItem(constants.global.APP_NAME, JSON.stringify(store.getState()))
 })
 
 ReactDOM.render(

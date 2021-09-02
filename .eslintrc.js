@@ -27,12 +27,13 @@ module.exports = {
             version: 'detect',
         },
     },
-    ignorePatterns: ['node_modules/'],
+    ignorePatterns: ['node_modules/', 'dist/'],
     rules: {
         'react/jsx-filename-extension': 0,
         'react/no-array-index-key': 0,
         'no-use-before-define': 0,
         'no-shadow': 0,
         'no-unused-vars': 1,
+        'quotes': [2, 'single', { 'avoidEscape': true }]
     },
 };
