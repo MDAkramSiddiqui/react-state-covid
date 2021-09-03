@@ -33,6 +33,7 @@ function App() {
     const [refreshTimeStamp, setRefreshTimeStamp] = useState(lastRefresh);
     const [currentSortBy, setCurrentSortBy] = useState(SortEnum.STATE_NAME);
     const [isStaleData, setIsStaleData] = useState(false);
+    const [isSorting, setIsSorting] = useState(false);
 
     useEffect(() => {
         setIsDataLoading(() => !storedStatesData?.length);
@@ -81,10 +82,9 @@ function App() {
                         : refreshTimeStamp,
                 );
 
-                setIsDataLoading(() => false);
                 setIsSortAsc(() => true);
                 setCurrentSortBy(() => SortEnum.STATE_NAME);
-            });
+            }).finally(() => setIsDataLoading(() => false));
     };
 
     const filterList = (stateQuery) => {
@@ -115,6 +115,7 @@ function App() {
     };
 
     const sortData = (data) => {
+        setIsSorting(() => true)
         let sortedData = [];
         switch (currentSortBy) {
             case SortEnum.ACTIVE_CASES:
@@ -147,6 +148,7 @@ function App() {
                 );
         }
         setStatesData(() => sortedData);
+        setIsSorting(() => false)
     };
 
     return (
@@ -258,7 +260,7 @@ function App() {
             {!isDataLoading &&
                 (statesData.length ? (
                     statesData.map((data, index) => (
-                        <StateCard stateData={data} key={index} />
+                        <StateCard stateData={data} key={index} isSorting={isSorting}/>
                     ))
                 ) : (
                     <div className="tile">

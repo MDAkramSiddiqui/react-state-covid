@@ -6,7 +6,7 @@ import { StackedBarChart } from '@carbon/charts-react';
 import '@carbon/charts/styles.css';
 import { ArrowDown16, ArrowUp16 } from '@carbon/icons-react';
 
-function StateCard({ stateData }) {
+function StateCard({ stateData, isSorting }) {
     const statesBarData = [
         {
             group: 'Total active cases',
@@ -130,7 +130,8 @@ function StateCard({ stateData }) {
             </Tile>
             <Accordion>
                 <AccordionItem title="Graph">
-                    {/* <StackedBarChart data={statesBarData} options={options} /> */}
+                    {/* HACK :: Prevent display when sorting to boost speed */}
+                    {!isSorting && <StackedBarChart data={statesBarData} options={options} />}
                 </AccordionItem>
             </Accordion>
         </div>
@@ -156,6 +157,7 @@ StateCard.propTypes = {
             isIncreased: PropTypes.bool.isRequired,
         }),
     }).isRequired,
+    isSorting: PropTypes.bool.isRequired
 };
 
 export default StateCard;
