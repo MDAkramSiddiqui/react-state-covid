@@ -201,7 +201,7 @@ function App() {
                             marginBottom: '10px',
                         }}
                         disabled={isDataLoading}
-                        onClick={handleSortOrderChange}
+                        onClick={debounce(handleSortOrderChange, 200)}
                         hasIconOnly
                         iconDescription="Sort order"
                     >
