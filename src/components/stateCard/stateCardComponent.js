@@ -131,7 +131,12 @@ function StateCard({ stateData, isSorting }) {
             <Accordion>
                 <AccordionItem title="Graph">
                     {/* HACK :: Prevent display when sorting to boost speed */}
-                    {!isSorting && <StackedBarChart data={statesBarData} options={options} />}
+                    {!isSorting && (
+                        <StackedBarChart
+                            data={statesBarData}
+                            options={options}
+                        />
+                    )}
                 </AccordionItem>
             </Accordion>
         </div>
@@ -157,7 +162,7 @@ StateCard.propTypes = {
             isIncreased: PropTypes.bool.isRequired,
         }),
     }).isRequired,
-    isSorting: PropTypes.bool.isRequired
+    isSorting: PropTypes.bool.isRequired,
 };
 
 export default StateCard;

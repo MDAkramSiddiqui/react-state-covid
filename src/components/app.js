@@ -84,7 +84,8 @@ function App() {
 
                 setIsSortAsc(() => true);
                 setCurrentSortBy(() => SortEnum.STATE_NAME);
-            }).finally(() => setIsDataLoading(() => false));
+            })
+            .finally(() => setIsDataLoading(() => false));
     };
 
     const filterList = (stateQuery) => {
@@ -115,7 +116,7 @@ function App() {
     };
 
     const sortData = (data) => {
-        setIsSorting(() => true)
+        setIsSorting(() => true);
         let sortedData = [];
         switch (currentSortBy) {
             case SortEnum.ACTIVE_CASES:
@@ -148,7 +149,7 @@ function App() {
                 );
         }
         setStatesData(() => sortedData);
-        setIsSorting(() => false)
+        setIsSorting(() => false);
     };
 
     return (
@@ -260,7 +261,11 @@ function App() {
             {!isDataLoading &&
                 (statesData.length ? (
                     statesData.map((data, index) => (
-                        <StateCard stateData={data} key={index} isSorting={isSorting}/>
+                        <StateCard
+                            stateData={data}
+                            key={index}
+                            isSorting={isSorting}
+                        />
                     ))
                 ) : (
                     <div className="tile">
