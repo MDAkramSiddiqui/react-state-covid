@@ -2,7 +2,7 @@
     "routes": [
       {
         "src": "/(.*)",
-        "headers": { "Cache-Control": "public, max-age=120" }
+        "headers": { "cache-control": "public, s-maxage=120" }
       }
     ]
   }
