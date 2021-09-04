@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals, consistent-return */
 
-const CACHE_NAME = 'react-covid-v1';
+const CACHE_NAME = 'react-covid-v1.1';
 
 const immutableRequests = [
     'https://unpkg.com/carbon-components/css/carbon-components.min.css',
