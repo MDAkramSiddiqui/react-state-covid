@@ -1,12 +1,9 @@
+
 {
-    "routes": [
-      {
-        "src": "/index_bundle.js",
-        "headers": { "cache-control": "public, s-maxage=120" }
-      },
-      {
-        "src": "/index.html",
-        "headers": { "cache-control": "public, s-maxage=120" }
-      }
+    "headers": [
+        {
+            "source": "/(.*)",
+            "headers": [{ "key": "cache-control", "value": "public, s-maxage=120" }]
+        }
     ]
-  }
+}
