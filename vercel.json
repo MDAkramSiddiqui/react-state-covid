@@ -1,7 +1,7 @@
 {
     "routes": [
       {
-        "src": "/index-bundle.js",
+        "src": "/index_bundle.js",
         "headers": { "cache-control": "public, s-maxage=120" }
       },
       {
