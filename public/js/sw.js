@@ -46,7 +46,7 @@ self.addEventListener('activate', (event) => {
                     ) {
                         return caches.delete(cacheName);
                     }
-                    return Promise.resolve()
+                    return Promise.resolve();
                 }),
             ),
         ),
@@ -55,14 +55,16 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
     event.respondWith(
-        fetch(event.request).catch(() =>
+        caches.open(CACHE_NAME).then((cache) =>
             caches.match(event.request).then((response) => {
                 if (response) {
                     return response;
                 }
-                if (event.request.headers.get('accept').includes('text/html')) {
-                    return caches.match('./index.html');
-                }
+
+                return fetch(event.request).then((networkResponse) => {
+                    cache.put(event.request, networkResponse.clone());
+                    return networkResponse;
+                });
             }),
         ),
     );
