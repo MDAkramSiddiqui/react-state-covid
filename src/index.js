@@ -7,6 +7,7 @@ import './index.css';
 import App from './components/app';
 import allReducers from './reducers';
 import constants from './constants';
+import * as serviceWorker from './sw';
 
 const reduxStore = () => {
     const data = localStorage.getItem(constants.global.APP_NAME);
@@ -34,3 +35,5 @@ ReactDOM.render(
     </Provider>,
     document.getElementById('root'),
 );
+
+serviceWorker.register();

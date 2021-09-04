@@ -6,7 +6,7 @@
   "author": "Mohammad Akram <mohammadakram077@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start:dev": "webpack-dev-server --mode development --open --hot --host 0.0.0.0 --port 8080",
+    "start:dev": "webpack-dev-server --mode development --open --hot --host localhost --port 8080",
     "build": "webpack --mode production",
     "lint": "eslint . -c .eslintrc.js --ext js --cache",
     "lint-fix": "yarn lint --fix",
@@ -20,6 +20,7 @@
     "carbon-components": "^10.41.0",
     "carbon-components-react": "^7.41.0",
     "carbon-icons": "^7.0.7",
+    "copy-webpack-plugin": "^9.0.1",
     "d3": "^7.0.1",
     "lodash": "^4.17.21",
     "prop-types": "^15.7.2",

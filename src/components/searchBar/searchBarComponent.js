@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import './searchBar.css';
 import { Search } from 'carbon-components-react';
 
 function SearchBar({ onChange, disabled }) {
@@ -21,7 +20,7 @@ function SearchBar({ onChange, disabled }) {
             disabled={disabled}
             onChange={(e) => handleStateQueryChange(e)}
             className="inline"
-            placeholder="Search, ex. Delhi, Kerala, All etc."
+            placeholder="Search, ex. Delhi, Kerala etc."
             labelText="Search"
         />
     );
