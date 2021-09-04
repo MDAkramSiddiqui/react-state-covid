@@ -2,7 +2,11 @@
 {
     "headers": [
         {
-            "source": "/(.*)",
+            "source": "/index.html",
+            "headers": [{ "key": "cache-control", "value": "public, s-maxage=120" }]
+        },
+        {
+            "source": "/index_bundle.js",
             "headers": [{ "key": "cache-control", "value": "public, s-maxage=120" }]
         }
     ]
