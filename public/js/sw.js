@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals, consistent-return */
 
-const CACHE_NAME = 'react-covid-v1.2';
+const CACHE_NAME = 'react-covid-v1.3';
 
 const immutableRequests = [
     'https://unpkg.com/carbon-components/css/carbon-components.min.css',
@@ -39,13 +39,14 @@ self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((cacheNames) =>
             Promise.all(
-                cacheNames.forEach((cacheName) => {
+                cacheNames.map((cacheName) => {
                     if (
                         CACHE_NAME !== cacheName &&
                         cacheName.startsWith('react-covid')
                     ) {
                         return caches.delete(cacheName);
                     }
+                    return Promise.resolve()
                 }),
             ),
         ),
