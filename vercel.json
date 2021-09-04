@@ -1,0 +1,8 @@
+{
+    "routes": [
+      {
+        "src": "/",
+        "headers": { "Cache-Control": "max-age=120" }
+      }
+    ]
+  }
